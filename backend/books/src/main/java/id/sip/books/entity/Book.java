@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 @Table(name = "books")
 public class Book {
 	
@@ -51,5 +53,18 @@ public class Book {
 	@Column
 	private int pages;
 	
+	@Column(name = "created_at")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date createdAt;
+	
+	@Column(name = "created_by", length = 50)
+	private String createdBy;
+	
+	@Column(name = "updated_at")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date updatedAt;
+	
+	@Column(name = "updated_by", length = 50)
+	private String updatedBy;
 	
 }

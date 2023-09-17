@@ -1,5 +1,7 @@
 package id.sip.books.entity.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import id.sip.books.dto.BaseResponse;
 import id.sip.books.dto.GetAllBookResponse;
 import id.sip.books.dto.GetBookByIdResponse;
+import id.sip.books.dto.NewBookRequest;
 import id.sip.books.entity.Book;
 import id.sip.books.entity.repository.BookRepository;
 
@@ -19,7 +22,7 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepo;
 	
-	@Autowired
+//	@Autowired
 	private Logger logger = LogManager.getLogger(BookService.class);
 	
 	public GetAllBookResponse findAllBook(String transactionId){
@@ -61,10 +64,21 @@ public class BookService {
 		return resp;
 	}
 	
-	public BaseResponse addNewBook(String transactionId, Book book) {
+	public BaseResponse addNewBook(String transactionId, NewBookRequest newBook, String email) {
 		BaseResponse resp = new BaseResponse();
 		try {
 			logger.info("transactionId: "+transactionId+" text: Add new Book");
+			Book book = new Book();
+			book.setAuthor(newBook.getAuthor());
+			book.setBookNo(newBook.getBookNo());
+			book.setPublishedDate(newBook.getPublishedDate());
+			book.setIsbn(newBook.getIsbn());
+			book.setTitle(newBook.getTitle());
+			book.setSubtitle(newBook.getSubtitle());
+			book.setSubject(newBook.getSubject());
+			book.setPages(newBook.getPages());
+			book.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new Date().toString()));
+			book.setCreatedBy(email);
 			bookRepo.save(book);
 			logger.info("Success");
 			resp.setResponseCode("201");
